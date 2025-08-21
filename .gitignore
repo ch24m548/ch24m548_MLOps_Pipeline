@@ -1,0 +1,4 @@
+mlops_env
+__pycache__/
+*.pyc
+.dvc/cache/
