@@ -1,24 +1,59 @@
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*.ipynb_checkpoints
-*.env
-.env/
+*$py.class
 
-# DVC and data
-*.dvc
-.dvc/
-# Ignore all files under data/ but allow .dvc pointer files
-data/**
-!data/**/*.dvc
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment / Python
+.env
+.venv/
+env/
+venv/
+mlops_env/
+
+# Logs
+*.log
+
+# Spark-related
+metastore_db/
+derby.log
+
+# DVC - Data and model files (actual files ignored, metadata is tracked)
+data/
+# Ignore all files in models/ except DVC metadata
+models/*
+!models/**/*.dvc
+
+
+# DVC cache
+.dvc/cache/
+.dvc/tmp/
 
 # MLflow
 mlruns/
+mlartifacts/
 
-# Environments
-mlops-env/
-venv/
-
-# Other
+# OS / Editor files
 .DS_Store
-/model
+Thumbs.db
+.vscode/
+.idea/
+
+# Docker (if used)
+*.pid
+*.tar
+*.img
+*.container
+.dockerignore
+
+# Virtual machine files
+*.vdi
+*.vbox
+*.vbox-prev
+
+# Temporary files
+*.bak
+*.swp
+*~
