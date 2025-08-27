@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.ipynb_checkpoints
+*.env
+.env/
+
+# DVC and data
+*.dvc
+.dvc/
+# Ignore all files under data/ but allow .dvc pointer files
+data/**
+!data/**/*.dvc
+
+# MLflow
+mlruns/
+
+# Environments
+mlops-env/
+venv/
+
+# Other
+.DS_Store
+/model
