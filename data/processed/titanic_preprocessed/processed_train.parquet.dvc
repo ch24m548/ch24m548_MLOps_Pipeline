@@ -1,0 +1,6 @@
+outs:
+- md5: 3d354e973a3a50e90fcf6791aaad943c.dir
+  size: 16747
+  nfiles: 12
+  hash: md5
+  path: processed_train.parquet
