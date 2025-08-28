@@ -1,0 +1,45 @@
+stages:
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+      - src/preprocess.py
+      - data/raw/train.csv
+    outs:
+      - data/processed/train.parquet
+      - data/processed/test.parquet
+
+  train:
+    cmd: python src/train_model.py
+    deps:
+      - src/train_model.py
+      - data/processed/train.parquet
+    outs:
+      - models/best_model
+    params:
+      - model.regParam
+      - model.elasticNetParam
+
+  baseline:
+    cmd: python src/baseline.py
+    deps:
+      - src/baseline.py
+      - data/processed/train.parquet
+    outs:
+      - data/drift/baseline.csv
+
+  simulate_drift:
+    cmd: python src/simulate_drift.py
+    deps:
+      - src/simulate_drift.py
+      - data/processed/test.parquet
+    outs:
+      - data/drift/drifted.csv
+
+  detect_drift:
+    cmd: python src/detect_drift.py
+    deps:
+      - src/detect_drift.py
+      - data/drift/baseline.csv
+      - data/drift/drifted.csv
+    outs:
+      - outputs/drift_report.html

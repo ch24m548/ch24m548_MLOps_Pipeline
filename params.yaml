@@ -1,0 +1,38 @@
+spark:
+  executor_memory: "4g"
+  driver_memory: "4g"
+  executor_cores: 4
+  parallelism: 2
+
+model:
+  experiment_id: 792831802516628706
+  run_id: 856b69df1e9547f9b814b4e199367356
+  model_name: TitanicSparkBestModel
+  model_stage: Staging
+
+preprocess:
+  raw_data: "data/raw/titanic.csv"
+  output_data: "data/processed/titanic_preprocessed/processed_train.parquet"
+
+train:
+  input_data: "data/processed/titanic_preprocessed/processed_train.parquet"
+  model_output: "models/logistic_model"
+
+baseline:
+  input_data: "data/processed/titanic_preprocessed/processed_train.parquet"
+  baseline: "data/baseline_stats"
+
+drift:
+  baseline: "data/baseline_stats"
+  threshold: 0.1
+  drift: "data/processed/titanic_preprocessed_drifted"
+
+simulate:
+  drift: "data/processed/titanic_preprocessed_drifted"
+  input_data: "data/processed/titanic_preprocessed/processed_train.parquet"
+
+evaluate:
+  model_output: "models/best_model"
+  test_path: "data/processed/titanic_preprocessed/processed_test.parquet"
+  metrics_path: "outputs/metrics.json"
+

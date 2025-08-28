@@ -22,15 +22,12 @@ derby.log
 
 # DVC - Data and model files (actual files ignored, metadata is tracked)
 
-# Ignore actual data files, but keep DVC metadata
+# Ignore raw and processed data files
 data/raw/**
-!data/raw/**/*.dvc
-
 data/processed/**
-!data/processed/**/*.dvc
 
-data/baseline_stats/**
-!data/baseline_stats/**/*.dvc
+# Allow all DVC pointer files anywhere
+!**/*.dvc
 
 # Ignore all files in models/ except DVC metadata
 models/*
