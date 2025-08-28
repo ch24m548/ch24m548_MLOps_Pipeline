@@ -30,7 +30,7 @@ data/processed/**
 !**/*.dvc
 
 # Ignore all files in models/ except DVC metadata
-models/*
+models/**
 !models/**/*.dvc
 
 

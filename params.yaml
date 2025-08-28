@@ -16,7 +16,7 @@ preprocess:
 
 train:
   input_data: "data/processed/titanic_preprocessed/processed_train.parquet"
-  model_output: "models/logistic_model"
+  model_output: "models/best_model"
 
 baseline:
   input_data: "data/processed/titanic_preprocessed/processed_train.parquet"

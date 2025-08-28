@@ -1,6 +1,0 @@
-outs:
-- md5: aefba5a02c71b031caff37773757c958.dir
-  size: 11227
-  nfiles: 4
-  hash: md5
-  path: titanic_preprocessed
