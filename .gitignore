@@ -23,9 +23,10 @@ derby.log
 # DVC - Data and model files (actual files ignored, metadata is tracked)
 # Ignore actual data, but allow .dvc pointer files
 /data/raw/
+!/data/raw/*.dvc
 /data/processed/
 /data/processed/titanic_preprocessed/
-!data/processed/titanic_preprocessed.dvc
+!data/processed/titanic_preprocessed/*.dvc
 /data/baseline_stats/
 
 # Ignore all files in models/ except DVC metadata
