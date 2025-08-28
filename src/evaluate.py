@@ -70,7 +70,7 @@ if __name__ == "__main__":
         # Paths
         # MODEL_PATH = "models/best_model"
         # TEST_PATH = "data/processed/test_data.parquet"
-        # METRICS_PATH = "outputs/metrics.json"
+        # METRICS_PATH = "report/metrics.json"
         
         MODEL_PATH = params["evaluate"]["model_output"]
         TEST_PATH = params["evaluate"]["test_path"]

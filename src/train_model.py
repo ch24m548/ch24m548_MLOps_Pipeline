@@ -137,13 +137,13 @@ def train_model(spark, input_path, model_output_path):
 
             # Save and log confusion matrix
             cm_df = pd.DataFrame(cm)
-            cm_path = "confusion_matrix.csv"
+            cm_path = os.path.join(report,"confusion_matrix.csv")
             cm_df.to_csv(cm_path, index=False)
             mlflow.log_artifact(cm_path)
 
             # Save classification report
             report_df = pd.DataFrame(report).transpose()
-            report_path = "classification_report.csv"
+            report_path = os.path.join(report,"classification_report.csv")
             report_df.to_csv(report_path)
             mlflow.log_artifact(report_path)
 
@@ -156,7 +156,7 @@ def train_model(spark, input_path, model_output_path):
             plt.title("Confusion Matrix")
             plt.tight_layout()
 
-            conf_matrix_path = "confusion_matrix.png"
+            conf_matrix_path = os.path.join(report,"confusion_matrix.png")
             plt.savefig(conf_matrix_path)
             mlflow.log_artifact(conf_matrix_path)
             plt.close()
