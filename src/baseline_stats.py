@@ -2,8 +2,17 @@
 
 from pyspark.sql import SparkSession
 import yaml
+import os, json
+import logging
+import sys
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def get_baseline_stats(spark, processed_data_path, output_stats_path):
+
+    logger.info(f"Generating baseline stats from {processed_data_path}")
     
     # Load preprocessed training data
     df = spark.read.parquet(processed_data_path)
@@ -16,9 +25,16 @@ def get_baseline_stats(spark, processed_data_path, output_stats_path):
     
     # Show on console for debug
     stats_df.show()
+    stats_pd = stats_df.toPandas()
     
     # Save stats as JSON (or CSV if you prefer)
-    stats_df.coalesce(1).write.mode("overwrite").json(output_stats_path)
+    # os.makedirs("data/baseline_stats", exist_ok=True)
+    os.makedirs(os.path.dirname(output_stats_path), exist_ok=True)
+
+    # whatever stats you're generating, for example:
+    # stats_pd.to_json(output_stats_path, orient="records", indent=4)
+    with open(output_stats_path, "w") as f:
+        json.dump(stats_pd.to_dict(), f, indent=2)
 
 
 if __name__ == "__main__":

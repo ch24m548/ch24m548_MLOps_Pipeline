@@ -1,0 +1,166 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/data_preprocessing.py
+    deps:
+    - path: data/raw/train.csv
+      hash: md5
+      md5: 2309cc5f04782ed9bb6016d9f4e381cf
+      size: 61194
+      isexec: true
+    - path: params.yaml
+      hash: md5
+      md5: 1bd2e83193e154733252cbcce4a7e200
+      size: 1351
+      isexec: true
+    - path: src/data_preprocessing.py
+      hash: md5
+      md5: 546f812716062ebac9c4e1ef8937352c
+      size: 2697
+      isexec: true
+    outs:
+    - path: data/processed/titanic_preprocessed/processed_train.parquet
+      hash: md5
+      md5: 5c418d3396e8f03ac599b5c2240d434e.dir
+      size: 7548
+      nfiles: 4
+  baseline_stats:
+    cmd: python src/baseline_stats.py
+    deps:
+    - path: data/processed/titanic_preprocessed/processed_train.parquet
+      hash: md5
+      md5: 5c418d3396e8f03ac599b5c2240d434e.dir
+      size: 7548
+      nfiles: 4
+    - path: params.yaml
+      hash: md5
+      md5: 1bd2e83193e154733252cbcce4a7e200
+      size: 1351
+      isexec: true
+    - path: src/baseline_stats.py
+      hash: md5
+      md5: 595765b3547c5c1b85bd07ba7603a145
+      size: 2275
+      isexec: true
+    outs:
+    - path: data/baseline_stats/baseline_stats.json
+      hash: md5
+      md5: 53a64076544981e47a2bfb7e5ce23fc8
+      size: 1002
+      isexec: true
+  train_model:
+    cmd: python src/train_model.py
+    deps:
+    - path: data/processed/titanic_preprocessed/processed_train.parquet
+      hash: md5
+      md5: 5c418d3396e8f03ac599b5c2240d434e.dir
+      size: 7548
+      nfiles: 4
+    - path: params.yaml
+      hash: md5
+      md5: 1bd2e83193e154733252cbcce4a7e200
+      size: 1351
+      isexec: true
+    - path: src/train_model.py
+      hash: md5
+      md5: 7337b680014e588efa1f3bdb307ed69c
+      size: 9882
+      isexec: true
+    outs:
+    - path: models/best_model
+      hash: md5
+      md5: fa4cf9e02c2b8c8abe3f5d2e79f837bc.dir
+      size: 24134
+      nfiles: 20
+  simulate_drift:
+    cmd: python src/simulate_drift.py
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: 1bd2e83193e154733252cbcce4a7e200
+      size: 1351
+      isexec: true
+    - path: src/simulate_drift.py
+      hash: md5
+      md5: 89c9a4118ef01ac57426590c88b67fe7
+      size: 1893
+      isexec: true
+    outs:
+    - path: data/processed/titanic_preprocessed_drifted/
+      hash: md5
+      md5: e3ffe1e4d23f468d3357c3086e37ee39.dir
+      size: 7681
+      nfiles: 4
+  drift_detection:
+    cmd: python src/drift_detection.py
+    deps:
+    - path: data/baseline_stats/baseline_stats.json
+      hash: md5
+      md5: 53a64076544981e47a2bfb7e5ce23fc8
+      size: 1002
+      isexec: true
+    - path: data/processed/titanic_preprocessed_drifted/
+      hash: md5
+      md5: e3ffe1e4d23f468d3357c3086e37ee39.dir
+      size: 7681
+      nfiles: 4
+    - path: params.yaml
+      hash: md5
+      md5: 1bd2e83193e154733252cbcce4a7e200
+      size: 1351
+      isexec: true
+    - path: src/drift_detection.py
+      hash: md5
+      md5: dda9902b17f27be5a54857bd50b39478
+      size: 4786
+      isexec: true
+    outs:
+    - path: report/drift_report.json
+      hash: md5
+      md5: 99914b932bd37a50b983c5e7c90ae93b
+      size: 2
+      isexec: true
+  retrain:
+    cmd: python src/automated_retrain.py
+    deps:
+    - path: data/raw/train.csv
+      hash: md5
+      md5: 2309cc5f04782ed9bb6016d9f4e381cf
+      size: 61194
+      isexec: true
+    - path: params.yaml
+      hash: md5
+      md5: 1bd2e83193e154733252cbcce4a7e200
+      size: 1351
+      isexec: true
+    - path: report/drift_report.json
+      hash: md5
+      md5: 99914b932bd37a50b983c5e7c90ae93b
+      size: 2
+      isexec: true
+    - path: src/automated_retrain.py
+      hash: md5
+      md5: 6e5f635b9473670a193d7797ef58930a
+      size: 2773
+      isexec: true
+    - path: src/data_preprocessing.py
+      hash: md5
+      md5: 546f812716062ebac9c4e1ef8937352c
+      size: 2697
+      isexec: true
+    - path: src/drift_detection.py
+      hash: md5
+      md5: dda9902b17f27be5a54857bd50b39478
+      size: 4786
+      isexec: true
+    - path: src/train_model.py
+      hash: md5
+      md5: 7337b680014e588efa1f3bdb307ed69c
+      size: 9882
+      isexec: true
+    outs:
+    - path: report/retrain_drift_report.json
+      hash: md5
+      md5: 99914b932bd37a50b983c5e7c90ae93b
+      size: 2
+      isexec: true

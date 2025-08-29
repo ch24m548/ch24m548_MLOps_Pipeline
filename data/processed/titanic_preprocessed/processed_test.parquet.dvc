@@ -1,6 +1,0 @@
-outs:
-- md5: d17b6af461ce2d21321c6d0d6dd38b40.dir
-  size: 3921
-  nfiles: 4
-  hash: md5
-  path: processed_test.parquet

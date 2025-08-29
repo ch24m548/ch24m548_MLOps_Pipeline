@@ -8,31 +8,38 @@ model:
   experiment_id: 792831802516628706
   run_id: 856b69df1e9547f9b814b4e199367356
   model_name: TitanicSparkBestModel
-  model_stage: Staging
+  model_stage: Production
 
 preprocess:
-  raw_data: "data/raw/titanic.csv"
-  output_data: "data/processed/titanic_preprocessed/processed_train.parquet"
+  raw_data: "data/raw/train.csv"
+  output_data: "data/processed/titanic_preprocessed/"
+
+baseline:
+  input_data: "data/processed/titanic_preprocessed/processed_train.parquet"
+  baseline: "data/baseline_stats/baseline_stats.json"
 
 train:
   input_data: "data/processed/titanic_preprocessed/processed_train.parquet"
   model_output: "models/best_model"
 
-baseline:
-  input_data: "data/processed/titanic_preprocessed/processed_train.parquet"
-  baseline: "data/baseline_stats"
-
-drift:
-  baseline: "data/baseline_stats"
-  threshold: 0.1
-  drift: "data/processed/titanic_preprocessed_drifted"
-
 simulate:
-  drift: "data/processed/titanic_preprocessed_drifted"
   input_data: "data/processed/titanic_preprocessed/processed_train.parquet"
+  drift: "data/processed/titanic_preprocessed_drifted/"
 
 evaluate:
   model_output: "models/best_model"
-  test_path: "data/processed/titanic_preprocessed/processed_test.parquet"
-  metrics_path: "report/metrics.json"
+  test_path: "data/processed/titanic_preprocessed/"
+  metrics_path: "report/evaluate_report.json"
 
+drift:
+  baseline: "data/baseline_stats/baseline_stats.json"
+  threshold: 0.1
+  drift: "data/processed/titanic_preprocessed_drifted"
+  output_path: "report/drift_report.json"
+
+retrain:
+  drift: "data/raw/titanic.csv"
+  baseline: "data/baseline_stats/baseline_stats.json"
+  model_output: "models/best_model"
+  output_data: "data/processed/titanic_preprocessed_drifted/"
+  output_path: "report/retrain_drift_report.json"

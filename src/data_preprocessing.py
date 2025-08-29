@@ -3,44 +3,54 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 from pyspark.ml.feature import StringIndexer
-import os
 
+import sys
+import os
+import logging
 import yaml
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def preprocess_data(spark, input_path, output_path):
 
-    # Load CSV
-    df = spark.read.csv(input_path, header=True, inferSchema=True)
+    logger.info(f"Starting preprocessing: raw_path={input_path}, output_path={output_path}")
 
-    # Drop columns not useful for prediction
-    df = df.drop("PassengerId", "Name", "Ticket", "Cabin")
+    try:
+            
+        # Load CSV
+        df = spark.read.csv(input_path, header=True, inferSchema=True)
 
-    # Fill missing values
-    mean_age = df.select("Age").dropna().agg({'Age': 'mean'}).collect()[0][0]
-    df = df.fillna({'Age': mean_age})
-    df = df.fillna({'Embarked': 'S'})
+        # Drop columns not useful for prediction
+        df = df.drop("PassengerId", "Name", "Ticket", "Cabin")
 
-    # Convert categorical to numeric
-    indexers = [
-        StringIndexer(inputCol="Sex", outputCol="SexIndexed"),
-        StringIndexer(inputCol="Embarked", outputCol="EmbarkedIndexed")
-    ]
+        # Fill missing values
+        mean_age = df.select("Age").dropna().agg({'Age': 'mean'}).collect()[0][0]
+        df = df.fillna({'Age': mean_age})
+        df = df.fillna({'Embarked': 'S'})
 
-    for indexer in indexers:
-        df = indexer.fit(df).transform(df)
+        # Convert categorical to numeric
+        indexers = [
+            StringIndexer(inputCol="Sex", outputCol="SexIndexed"),
+            StringIndexer(inputCol="Embarked", outputCol="EmbarkedIndexed")
+        ]
 
-    # Drop original categorical columns
-    df = df.drop("Sex", "Embarked")
+        for indexer in indexers:
+            df = indexer.fit(df).transform(df)
 
-    # Split into train and test sets (80% train, 20% test)
-    train_df, test_df = df.randomSplit([0.8, 0.2], seed=42)
+        # Drop original categorical columns
+        df = df.drop("Sex", "Embarked")
 
-    # Save preprocessed train and test data separately
-    train_path = os.path.join(output_path, "processed_train.parquet")
-    test_path = os.path.join(output_path, "processed_test.parquet")
-    
-    train_df.write.mode("overwrite").parquet(train_path)
-    test_df.write.mode("overwrite").parquet(test_path)
+        # Save preprocessed train and test data separately
+        train_path = os.path.join(output_path, "processed_train.parquet")
+        # Save processed data
+        df.write.mode("overwrite").parquet(train_path)
+
+        logger.info("Preprocessing complete")
+
+    except Exception as e:
+        logger.error(f"Preprocessing failed: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
 

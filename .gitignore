@@ -1,16 +1,4 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
 # Environment / Python
-.env
-.venv/
-env/
-venv/
 mlops_env/
 
 # Logs
@@ -24,15 +12,20 @@ derby.log
 
 # Ignore raw and processed data files
 data/raw/**
+!**/*.dvc
+
 data/processed/**
+data/baseline_stats/**
+
+report/
+notebooks/
+app/**
+
+# Ignore all files in models
+models/**
 
 # Allow all DVC pointer files anywhere
 !**/*.dvc
-
-# Ignore all files in models/ except DVC metadata
-models/**
-!models/**/*.dvc
-
 
 # DVC cache
 .dvc/cache/
@@ -42,25 +35,3 @@ models/**
 mlruns/
 mlartifacts/
 
-# OS / Editor files
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-
-# Docker (if used)
-*.pid
-*.tar
-*.img
-*.container
-.dockerignore
-
-# Virtual machine files
-*.vdi
-*.vbox
-*.vbox-prev
-
-# Temporary files
-*.bak
-*.swp
-*~

@@ -2,18 +2,21 @@ stages:
   preprocess:
     cmd: python src/data_preprocessing.py
     deps:
-    - data/raw/titanic.csv
+    - data/raw/train.csv
+    - params.yaml
     - src/data_preprocessing.py
     outs:
-    - data/processed/titanic_preprocessed/processed_test.parquet
-    - data/processed/titanic_preprocessed/processed_train.parquet
+    - data/processed/titanic_preprocessed/processed_train.parquet:
+        cache: false
   baseline_stats:
     cmd: python src/baseline_stats.py
     deps:
     - data/processed/titanic_preprocessed/processed_train.parquet
+    - params.yaml
     - src/baseline_stats.py
     outs:
-    - data/baseline_stats.json
+    - data/baseline_stats/baseline_stats.json:
+        cache: false
   train_model:
     cmd: python src/train_model.py
     deps:
@@ -21,28 +24,36 @@ stages:
     - params.yaml
     - src/train_model.py
     outs:
-    - models/logistic_model
-  evaluate:
-    cmd: python src/evaluate.py
-    deps:
-    - data/processed/titanic_preprocessed/processed_test.parquet
-    - models/logistic_model
-    - src/evaluate.py
-    outs:
-    - outputs/classification_report.csv
-    - outputs/confusion_matrix.png
+    - models/best_model:
+        cache: false
   simulate_drift:
     cmd: python src/simulate_drift.py
     deps:
-    - data/processed/titanic_preprocessed/processed_test.parquet
+    - params.yaml
     - src/simulate_drift.py
     outs:
-    - data/drifted/test_drifted.parquet
+    - data/processed/titanic_preprocessed_drifted/:
+        cache: false
   drift_detection:
     cmd: python src/drift_detection.py
     deps:
-    - data/baseline_stats.json
-    - data/drifted/test_drifted.parquet
+    - data/baseline_stats/baseline_stats.json
+    - data/processed/titanic_preprocessed_drifted/
+    - params.yaml
     - src/drift_detection.py
     outs:
-    - outputs/drift_report.json
+    - report/drift_report.json:
+        cache: false
+  retrain:
+    cmd: python src/automated_retrain.py
+    deps:
+    - data/raw/train.csv
+    - params.yaml
+    - report/drift_report.json
+    - src/automated_retrain.py
+    - src/data_preprocessing.py
+    - src/drift_detection.py
+    - src/train_model.py
+    outs:
+    - report/retrain_drift_report.json:
+        cache: false

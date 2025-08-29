@@ -3,6 +3,8 @@
 import mlflow.spark
 from pyspark.sql import SparkSession
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
+from pyspark.ml import PipelineModel
+
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import pandas as pd
 import json
@@ -15,7 +17,8 @@ def evaluate_model(spark, model_path, test_data_path, output_metrics_path):
     df = spark.read.parquet(test_data_path)
 
     # Load model
-    model = mlflow.spark.load_model(model_path)
+    # model = mlflow.spark.load_model(model_path)
+    model = PipelineModel.load(model_path)
 
     # Predict
     predictions = model.transform(df)

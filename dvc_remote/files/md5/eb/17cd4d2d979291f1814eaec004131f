@@ -1,0 +1,5 @@
+{"summary":"count","Pclass":"746","Age":"746","SibSp":"746","Parch":"746","Fare":"746","SexIndexed":"746","EmbarkedIndexed":"746"}
+{"summary":"mean","Pclass":"2.3230563002680964","Age":"29.524377858381868","SibSp":"0.5093833780160858","Parch":"0.3753351206434316","Fare":"31.649161394101874","SexIndexed":"0.35254691689008044","EmbarkedIndexed":"0.35656836461126007"}
+{"summary":"stddev","Pclass":"0.8266885763061882","Age":"13.140922563632166","SibSp":"1.0771789631235011","Parch":"0.7831327265599237","Fare":"51.379341859449546","SexIndexed":"0.47808364781272134","EmbarkedIndexed":"0.6315558874273659"}
+{"summary":"min","Pclass":"1","Age":"0.42","SibSp":"0","Parch":"0","Fare":"0.0","SexIndexed":"0.0","EmbarkedIndexed":"0.0"}
+{"summary":"max","Pclass":"3","Age":"80.0","SibSp":"8","Parch":"6","Fare":"512.3292","SexIndexed":"1.0","EmbarkedIndexed":"2.0"}

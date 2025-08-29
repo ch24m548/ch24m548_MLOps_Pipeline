@@ -3,6 +3,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when
 import sys
+import yaml
 
 def simulate_drift(spark, input_path, output_path):
 
