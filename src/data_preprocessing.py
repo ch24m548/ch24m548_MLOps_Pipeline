@@ -42,9 +42,9 @@ def preprocess_data(spark, input_path, output_path):
         df = df.drop("Sex", "Embarked")
 
         # Save preprocessed train and test data separately
-        train_path = os.path.join(output_path, "processed_train.parquet")
+        # train_path = os.path.join(output_path, "processed_train.parquet")
         # Save processed data
-        df.write.mode("overwrite").parquet(train_path)
+        df.write.mode("overwrite").parquet(output_path)
 
         logger.info("Preprocessing complete")
 
@@ -77,6 +77,13 @@ if __name__ == "__main__":
         # RAW_PATH = "data/raw/titanic.csv"
         RAW_PATH = params["preprocess"]["raw_data"]
         PROCESSED_PATH = params["preprocess"]["output_data"]
+
+        # Data Pre-processing
+        preprocess_data(spark, RAW_PATH, PROCESSED_PATH)
+        print("Data preprocessing complete.")
+
+        RAW_PATH = params["preprocess"]["test_data"]
+        PROCESSED_PATH = params["preprocess"]["test_output"]
 
         # Data Pre-processing
         preprocess_data(spark, RAW_PATH, PROCESSED_PATH)

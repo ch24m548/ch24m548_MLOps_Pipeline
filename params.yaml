@@ -12,7 +12,9 @@ model:
 
 preprocess:
   raw_data: "data/raw/train.csv"
-  output_data: "data/processed/titanic_preprocessed/"
+  test_data: "data/raw/test.csv"
+  output_data: "data/processed/titanic_preprocessed/processed_train.parquet"
+  test_output: "data/processed/titanic_preprocessed/processed_test.parquet"
 
 baseline:
   input_data: "data/processed/titanic_preprocessed/processed_train.parquet"
@@ -38,7 +40,7 @@ drift:
   output_path: "report/drift_report.json"
 
 retrain:
-  drift: "data/raw/titanic.csv"
+  drift: "data/raw/train.csv"
   baseline: "data/baseline_stats/baseline_stats.json"
   model_output: "models/best_model"
   output_data: "data/processed/titanic_preprocessed_drifted/"

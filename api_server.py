@@ -6,6 +6,7 @@ import mlflow.pyfunc
 import uvicorn
 import logging
 import pandas as pd
+import os
 
 # Setup logger
 logging.basicConfig(level=logging.INFO)
@@ -24,12 +25,16 @@ class PassengerFeatures(BaseModel):
 app = FastAPI()
 
 # Load model from MLflow Model Registry
-model_name = "TitanicSparkModel"
-model_stage = "Production"  # or "Staging"
+model_name = os.getenv("MODEL_NAME")
+model_stage = os.getenv("MODEL_STAGE")
+mlflow_uri = os.getenv("MLFLOW_TRACKING_URI")
 
 try:
     logger.info(f"Loading model '{model_name}' from stage '{model_stage}'...")
+    
+    mlflow.set_tracking_uri(mlflow_uri)
     model = mlflow.pyfunc.load_model(f"models:/{model_name}/{model_stage}")
+    
     # model = mlflow.pyfunc.load_model("mlruns/792831802516628706/d90b8f58d5ec4693bfdf33bdd8db5720/artifacts/model")
     logger.info("Model loaded successfully.")
 
@@ -60,4 +65,6 @@ def predict(features: PassengerFeatures):
 
 
 if __name__ == "__main__":
+    
+    mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"))
     uvicorn.run(app, host="0.0.0.0", port=8000)

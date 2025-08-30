@@ -199,7 +199,7 @@ def train_model(spark, input_path, model_output_path):
             name="TitanicSparkBestModel"
         )
 
-        # Transition to Staging
+        # Transition to Production
         client = MlflowClient()
         client.transition_model_version_stage(
             name=result.name,
@@ -208,7 +208,7 @@ def train_model(spark, input_path, model_output_path):
             archive_existing_versions=True
         )
 
-        print(f"Model {result.name} v{result.version} transitioned to 'Staging'.")
+        print(f"Model {result.name} v{result.version} transitioned to 'Production'.")
 
         with mlflow.start_run(run_name="best_model_registration") as final_run:
             duration = time.time() - start_time

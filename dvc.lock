@@ -10,18 +10,18 @@ stages:
       isexec: true
     - path: params.yaml
       hash: md5
-      md5: 1bd2e83193e154733252cbcce4a7e200
-      size: 1351
+      md5: cd970cb0b6de09c7d322e9d78ee6dcf2
+      size: 1483
       isexec: true
     - path: src/data_preprocessing.py
       hash: md5
-      md5: 546f812716062ebac9c4e1ef8937352c
-      size: 2697
+      md5: 50192dcde5efd2fa8a8bfa108cfb9e8d
+      size: 2956
       isexec: true
     outs:
     - path: data/processed/titanic_preprocessed/processed_train.parquet
       hash: md5
-      md5: 5c418d3396e8f03ac599b5c2240d434e.dir
+      md5: 73e0222f21f8ad0a5750508e22abaaf6.dir
       size: 7548
       nfiles: 4
   baseline_stats:
@@ -29,13 +29,13 @@ stages:
     deps:
     - path: data/processed/titanic_preprocessed/processed_train.parquet
       hash: md5
-      md5: 5c418d3396e8f03ac599b5c2240d434e.dir
+      md5: 73e0222f21f8ad0a5750508e22abaaf6.dir
       size: 7548
       nfiles: 4
     - path: params.yaml
       hash: md5
-      md5: 1bd2e83193e154733252cbcce4a7e200
-      size: 1351
+      md5: cd970cb0b6de09c7d322e9d78ee6dcf2
+      size: 1483
       isexec: true
     - path: src/baseline_stats.py
       hash: md5
@@ -53,32 +53,32 @@ stages:
     deps:
     - path: data/processed/titanic_preprocessed/processed_train.parquet
       hash: md5
-      md5: 5c418d3396e8f03ac599b5c2240d434e.dir
+      md5: 73e0222f21f8ad0a5750508e22abaaf6.dir
       size: 7548
       nfiles: 4
     - path: params.yaml
       hash: md5
-      md5: 1bd2e83193e154733252cbcce4a7e200
-      size: 1351
+      md5: cd970cb0b6de09c7d322e9d78ee6dcf2
+      size: 1483
       isexec: true
     - path: src/train_model.py
       hash: md5
-      md5: 7337b680014e588efa1f3bdb307ed69c
-      size: 9882
+      md5: 66183d3bbf07e31a26d71568b5e4838d
+      size: 9888
       isexec: true
     outs:
     - path: models/best_model
       hash: md5
-      md5: fa4cf9e02c2b8c8abe3f5d2e79f837bc.dir
-      size: 24134
-      nfiles: 20
+      md5: 9cec2411e23ee7fb5981e8b32298e124.dir
+      size: 5917
+      nfiles: 16
   simulate_drift:
     cmd: python src/simulate_drift.py
     deps:
     - path: params.yaml
       hash: md5
-      md5: 1bd2e83193e154733252cbcce4a7e200
-      size: 1351
+      md5: cd970cb0b6de09c7d322e9d78ee6dcf2
+      size: 1483
       isexec: true
     - path: src/simulate_drift.py
       hash: md5
@@ -88,7 +88,7 @@ stages:
     outs:
     - path: data/processed/titanic_preprocessed_drifted/
       hash: md5
-      md5: e3ffe1e4d23f468d3357c3086e37ee39.dir
+      md5: d81a8179e41a84cf80212994a0ec05a5.dir
       size: 7681
       nfiles: 4
   drift_detection:
@@ -101,13 +101,13 @@ stages:
       isexec: true
     - path: data/processed/titanic_preprocessed_drifted/
       hash: md5
-      md5: e3ffe1e4d23f468d3357c3086e37ee39.dir
+      md5: d81a8179e41a84cf80212994a0ec05a5.dir
       size: 7681
       nfiles: 4
     - path: params.yaml
       hash: md5
-      md5: 1bd2e83193e154733252cbcce4a7e200
-      size: 1351
+      md5: cd970cb0b6de09c7d322e9d78ee6dcf2
+      size: 1483
       isexec: true
     - path: src/drift_detection.py
       hash: md5
@@ -130,8 +130,8 @@ stages:
       isexec: true
     - path: params.yaml
       hash: md5
-      md5: 1bd2e83193e154733252cbcce4a7e200
-      size: 1351
+      md5: cd970cb0b6de09c7d322e9d78ee6dcf2
+      size: 1483
       isexec: true
     - path: report/drift_report.json
       hash: md5
@@ -145,8 +145,8 @@ stages:
       isexec: true
     - path: src/data_preprocessing.py
       hash: md5
-      md5: 546f812716062ebac9c4e1ef8937352c
-      size: 2697
+      md5: 50192dcde5efd2fa8a8bfa108cfb9e8d
+      size: 2956
       isexec: true
     - path: src/drift_detection.py
       hash: md5
@@ -155,8 +155,8 @@ stages:
       isexec: true
     - path: src/train_model.py
       hash: md5
-      md5: 7337b680014e588efa1f3bdb307ed69c
-      size: 9882
+      md5: 66183d3bbf07e31a26d71568b5e4838d
+      size: 9888
       isexec: true
     outs:
     - path: report/retrain_drift_report.json

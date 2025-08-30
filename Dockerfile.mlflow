@@ -1,0 +1,11 @@
+FROM python:3.11-slim
+
+WORKDIR /mlflow
+
+RUN pip install --no-cache-dir mlflow
+
+VOLUME ["/mlflow/mlruns"]
+
+EXPOSE 5000
+
+CMD ["mlflow", "server", "--host", "0.0.0.0", "--port", "5000", "--backend-store-uri", "file:/mlflow/mlruns", "--default-artifact-root", "file:/mlflow/mlruns"]
