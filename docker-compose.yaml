@@ -27,6 +27,7 @@ services:
       - .env
     volumes:
       - .:/app
+      - ../dvc_remote:/app/../dvc_remote
     container_name: api_server
 
   inference:
@@ -45,5 +46,8 @@ services:
       target: test
     depends_on:
       - fastapi
+    volumes:
+      - .:/app
+      - ../dvc_remote:/app/../dvc_remote
     container_name: test-client
     restart: on-failure
