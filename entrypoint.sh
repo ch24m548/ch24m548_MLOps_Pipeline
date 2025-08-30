@@ -11,6 +11,9 @@ git remote add origin https://your-git-repo-url 2>/dev/null || true
 dvc pull --force
 echo "DVC data pulled successfully."
 
+echo "Running preprocessing & training pipeline..."
+dvc repro
+
 echo "Waiting for MLflow to be ready..."
 sleep 10  # replace with healthcheck if needed
 

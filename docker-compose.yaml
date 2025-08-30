@@ -21,14 +21,10 @@ mlflow:
     - "5000:5000"
   volumes:
     - ./mlruns:/mlflow/mlruns
+  container_name: mlflow
   environment:
     - MLFLOW_BACKEND_STORE_URI=sqlite:///mlflow.db
     - MLFLOW_DEFAULT_ARTIFACT_ROOT=/mlflow/mlruns
-  command: mlflow server \
-    --backend-store-uri=sqlite:///mlflow.db \
-    --default-artifact-root=/mlflow/mlruns \
-    --host 0.0.0.0 \
-    --port 5000
 
 fastapi:
   build:
@@ -40,4 +36,15 @@ fastapi:
     - mlflow
   env_file:
     - .env
-  command: ["sh", "entrypoint.sh"]
+  volumes:
+      - .:/app
+  container_name: api_server
+
+  inference:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    depends_on:
+      - api
+    entrypoint: ["python", "inference.py"]
+    container_name: inference_runner

@@ -1,3 +1,3 @@
 MLFLOW_TRACKING_URI=http://mlflow:5000
-MODEL_NAME=TitanicSparkModel
+MODEL_NAME=TitanicSparkBestModel
 MODEL_STAGE=Production

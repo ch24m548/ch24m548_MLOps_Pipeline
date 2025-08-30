@@ -45,3 +45,7 @@ retrain:
   model_output: "models/best_model"
   output_data: "data/processed/titanic_preprocessed_drifted/"
   output_path: "report/retrain_drift_report.json"
+
+infer:
+  test_path: "data/processed/titanic_preprocessed/processed_test.parquet/"
+  predict: "data/predictions/predictions.csv"

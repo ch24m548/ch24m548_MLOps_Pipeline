@@ -3,7 +3,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 from pyspark.ml.feature import StringIndexer
-
 import sys
 import os
 import logging
@@ -13,36 +12,36 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def preprocess_data(spark, input_path, output_path):
-
     logger.info(f"Starting preprocessing: raw_path={input_path}, output_path={output_path}")
 
     try:
-            
         # Load CSV
         df = spark.read.csv(input_path, header=True, inferSchema=True)
 
-        # Drop columns not useful for prediction
+        # Drop unnecessary columns
         df = df.drop("PassengerId", "Name", "Ticket", "Cabin")
 
-        # Fill missing values
+        # Fill missing numerical values
         mean_age = df.select("Age").dropna().agg({'Age': 'mean'}).collect()[0][0]
-        df = df.fillna({'Age': mean_age})
-        df = df.fillna({'Embarked': 'S'})
+        mean_fare = df.select("Fare").dropna().agg({'Fare': 'mean'}).collect()[0][0]
 
-        # Convert categorical to numeric
+        df = df.fillna({'Age': mean_age, 'Fare': mean_fare})
+
+        # Fill missing categorical values with a placeholder
+        df = df.fillna({'Embarked': 'Unknown', 'Sex': 'Unknown'})
+
+        # Index categorical variables with handleInvalid='keep' to capture unseen or unknown values
         indexers = [
-            StringIndexer(inputCol="Sex", outputCol="SexIndexed"),
-            StringIndexer(inputCol="Embarked", outputCol="EmbarkedIndexed")
+            StringIndexer(inputCol="Sex", outputCol="SexIndexed", handleInvalid="keep"),
+            StringIndexer(inputCol="Embarked", outputCol="EmbarkedIndexed", handleInvalid="keep")
         ]
 
         for indexer in indexers:
             df = indexer.fit(df).transform(df)
 
-        # Drop original categorical columns
+        # Drop original string columns
         df = df.drop("Sex", "Embarked")
 
-        # Save preprocessed train and test data separately
-        # train_path = os.path.join(output_path, "processed_train.parquet")
         # Save processed data
         df.write.mode("overwrite").parquet(output_path)
 
